@@ -53,8 +53,8 @@ This project is a BookMyShow-like ticket booking app built with a complete DevOp
 - 📊 **Monitoring** → Prometheus + Grafana dashboards for app + Jenkins monitoring  
 
 
-##
-🏗 Architecture
+
+## 🏗 Architecture
 ```flowchart TD
   A[Developer] -->|Push Code| B[GitHub Repo]
   B -->|Webhook| C[Jenkins Pipeline]
@@ -191,6 +191,7 @@ docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
     * SSL: ✅
 
 * Now Jenkins will send build success/failure emails with logs attached.
+
 
 
 
