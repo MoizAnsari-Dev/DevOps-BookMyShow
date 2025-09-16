@@ -332,6 +332,8 @@ post {
 ```
 
 * Sends an email notification with logs and scan results.
+
+
 ## ☸️ Kubernetes Deployment
 1️⃣ Prerequisites
 
@@ -437,6 +439,7 @@ stage('Deploy to EKS Cluster') {
   * Make sure AWS IAM permissions are set up so Jenkins can run aws eks update-kubeconfig.
 
   * For production, consider using Helm charts or Kustomize for easier management.
+
 
 
 
