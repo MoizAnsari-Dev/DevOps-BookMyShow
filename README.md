@@ -28,8 +28,6 @@ This project is a BookMyShow-like ticket booking app built with a complete DevOp
   - [Email Integration](#6️⃣-email-integration)
 - [Jenkins Pipeline](#-jenkins-pipeline)
 - [Kubernetes Deployment](#-kubernetes-deployment)
-- [Monitoring with Prometheus & Grafana](#-monitoring-with-prometheus--grafana)
-- [Future Improvements](#-future-improvements)
 - [Contributing](#-contributing)
 - [License](#-license)
 
@@ -449,6 +447,28 @@ stage('Deploy to EKS Cluster') {
 
 
 
+## 🤝 Contributing  
+
+Contributions are always welcome!  
+
+If you’d like to contribute:  
+
+1. **Fork** the repository  
+2. Create a new **feature branch** 
+```
+   git checkout -b feature/your-feature-name
+```
+3. Commit your changes
+```
+git commit -m "Add: your detailed commit message"
+```
+
+4. Push the branch
+```
+git push origin feature/your-feature-name
+```
+
+5. Open a Pull Request and describe what you’ve added/changed
 
 
 
