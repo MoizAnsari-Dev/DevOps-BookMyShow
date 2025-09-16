@@ -174,7 +174,7 @@ docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 
 * Configure SonarQube in Jenkins (Manage Jenkins → Configure System → SonarQube servers).
 
-## 6️⃣ Email Integration
+### 6️⃣ Email Integration
 
 * Generate Gmail App Password (Google Account → Security → App Passwords).
 
@@ -191,6 +191,148 @@ docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
     * SSL: ✅
 
 * Now Jenkins will send build success/failure emails with logs attached.
+
+## 🏗 Jenkins Pipeline
+🔹 1. Clean Workspace
+```
+stage('Clean Workspace') {
+    steps { cleanWs() }
+}
+```
+
+* Removes old files to ensure a fresh build.
+
+🔹 2. Checkout from GitHub
+```
+stage('Checkout from Git') {
+    steps {
+        git branch: 'main', url: 'https://github.com/KastroVKiran/Book-My-Show.git'
+        sh 'ls -la'
+    }
+}
+```
+
+
+* Fetches the source code from GitHub.
+
+🔹 3. SonarQube Analysis
+```
+stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('sonar-server') {
+            sh '''
+            $SCANNER_HOME/bin/sonar-scanner \
+              -Dsonar.projectName=BMS \
+              -Dsonar.projectKey=BMS
+            '''
+        }
+    }
+}
+```
+
+
+* Runs SonarQube static analysis.
+
+🔹 4. Quality Gate Check
+```
+stage('Quality Gate') {
+    steps {
+        script {
+            waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token'
+        }
+    }
+}
+```
+
+
+* Waits for SonarQube to pass the quality gate.
+
+🔹 5. Install Dependencies
+```
+stage('Install Dependencies') {
+    steps {
+        sh '''
+        cd bookmyshow-app
+        rm -rf node_modules package-lock.json
+        npm install
+        '''
+    }
+}
+```
+
+
+* Cleans & installs Node.js dependencies.
+
+🔹 6. OWASP Dependency Scan
+```
+stage('OWASP FS Scan') {
+    steps {
+        dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit',
+                        odcInstallation: 'DP-Check'
+        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+    }
+}
+```
+
+* Scans for dependency vulnerabilities.
+
+🔹 7. Trivy FS Scan
+```
+stage('Trivy FS Scan') {
+    steps { sh 'trivy fs . > trivyfs.txt' }
+}
+```
+
+* Scans filesystem for vulnerabilities with Trivy.
+
+🔹 8. Docker Build & Push
+```
+stage('Docker Build & Push') {
+    steps {
+        script {
+            withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                sh '''
+                docker build --no-cache -t moizaman/bms:latest -f bookmyshow-app/Dockerfile bookmyshow-app
+                docker push moizaman/bms:latest
+                '''
+            }
+        }
+    }
+}
+```
+
+* Builds Docker image & pushes to DockerHub.
+
+🔹 9. Deploy to Container
+```
+stage('Deploy to Container') {
+    steps {
+        sh '''
+        docker stop bms || true
+        docker rm bms || true
+        docker run -d --restart=always --name bms -p 3000:3000 moizaman/bms:latest
+        '''
+    }
+}
+```
+
+* Deploys the app as a Docker container on port 3000.
+
+🔹 10. Email Notifications
+```
+post {
+    always {
+        emailext attachLog: true,
+            subject: "'${currentBuild.result}'",
+            body: "Project: ${env.JOB_NAME}<br/>Build Number: ${env.BUILD_NUMBER}<br/>URL: ${env.BUILD_URL}<br/>",
+            to: 'moizansari.india@gmail.com',
+            attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
+    }
+}
+```
+
+* Sends an email notification with logs and scan results.
+
 
 
 
