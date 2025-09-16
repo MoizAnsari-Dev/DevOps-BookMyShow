@@ -142,10 +142,9 @@ sudo apt-get update
 sudo apt-get install jenkins -y
 ```
 
+  * Open Jenkins at: http://YOUR-IP:8080
 
-###### Open Jenkins at: http://YOUR-IP:8080
-
-##### Install plugins: NodeJS, SonarQube Scanner, Docker Pipeline, OWASP Dependency-Check, Email Extension
+  * Install plugins: NodeJS, SonarQube Scanner, Docker Pipeline, OWASP Dependency-Check, Email Extension
 
  ### 3️⃣ Install Docker
  ```
@@ -168,9 +167,8 @@ trivy --version
 docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 ```
 * Open SonarQube at: http://YOUR-IP:9000
-
-
-* Default login: admin / admin
+* 
+* Default login: admin/admin
 
 * Change password & generate SonarQube Token
 
@@ -182,17 +180,19 @@ docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 
 * In Jenkins:
 
-Add credentials (Username = Gmail ID, Password = App password).
+  * Add credentials (Username = Gmail ID, Password = App password).
 
-Configure SMTP:
+  * Configure SMTP:
 
-Server: smtp.gmail.com
+    * Server: smtp.gmail.com
 
-Port: 465
+    * Port: 465
 
-SSL: ✅
+    * SSL: ✅
 
-Now Jenkins will send build success/failure emails with logs attached.
+* Now Jenkins will send build success/failure emails with logs attached.
+
+
 
 
 
