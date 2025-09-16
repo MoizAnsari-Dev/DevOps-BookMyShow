@@ -313,7 +313,7 @@ stage('Deploy to Container') {
     }
 }
 ```
-
+![A Jenkins Pipeline](bookmyshow-app/public/website_images/Screenshot From 2025-09-15 23-49-38.png)
 * Deploys the app as a Docker container on port 3000.
 
 🔹 10. Email Notifications
@@ -474,6 +474,7 @@ git push origin feature/your-feature-name
 * Update documentation if needed
 
 * Ensure pipelines/tests pass before submitting PR
+
 
 
 
