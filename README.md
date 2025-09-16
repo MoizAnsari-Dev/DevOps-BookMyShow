@@ -332,7 +332,111 @@ post {
 ```
 
 * Sends an email notification with logs and scan results.
+## ☸️ Kubernetes Deployment
+1️⃣ Prerequisites
 
+* An EKS cluster running in AWS (created via eksctl or AWS Console).
+
+* kubectl configured to connect to your cluster:
+```
+aws eks update-kubeconfig --name <cluster-name> --region <region>
+kubectl get nodes
+```
+* Docker image already built and pushed to DockerHub (moizaman/bms:latest or your DockerHub repo).
+
+2️⃣ Deployment YAML (deployment.yml)
+
+* This file defines the application pods:
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bms-deployment
+  labels:
+    app: bms
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bms
+  template:
+    metadata:
+      labels:
+        app: bms
+    spec:
+      containers:
+      - name: bms
+        image: moizaman/bms:latest   # Replace with your DockerHub repo
+        ports:
+        - containerPort: 3000
+```
+3️⃣ Service YAML (service.yml)
+
+* This file defines how the app is exposed to users:
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: bms-service
+spec:
+  selector:
+    app: bms
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer   # Use NodePort if not in cloud
+```
+4️⃣ Apply Manifests
+
+* Run the following commands:
+```
+kubectl apply -f deployment.yml
+kubectl apply -f service.yml
+```
+5️⃣ Verify Deployment
+```
+kubectl get pods
+kubectl get svc
+```
+* Pods should be in the Running state.
+
+* bms-service will show an EXTERNAL-IP if using LoadBalancer.
+
+* Access the app at:
+  * http://EXTERNAL-IP:3000
+
+
+6️⃣ Integrating with Jenkinsfile
+
+* In your Kubernetes-enabled Jenkinsfile, after building & pushing the Docker image, add:
+```
+stage('Deploy to EKS Cluster') {
+    steps {
+        script {
+            sh '''
+            echo "Configuring kubectl..."
+            aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+
+            echo "Deploying application to EKS..."
+            kubectl apply -f deployment.yml
+            kubectl apply -f service.yml
+
+            echo "Verifying deployment..."
+            kubectl get pods
+            kubectl get svc
+            '''
+        }
+    }
+}
+```
+* ✅ Notes
+
+  * If using minikube or a local cluster, change Service type from LoadBalancer → NodePort.
+
+  * Make sure AWS IAM permissions are set up so Jenkins can run aws eks update-kubeconfig.
+
+  * For production, consider using Helm charts or Kustomize for easier management.
 
 
 
