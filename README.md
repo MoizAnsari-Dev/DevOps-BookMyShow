@@ -29,13 +29,12 @@ This project is a BookMyShow-like ticket booking app built with a complete DevOp
 - [Jenkins Pipeline](#-jenkins-pipeline)
 - [Kubernetes Deployment](#-kubernetes-deployment)
 - [Contributing](#-contributing)
-- [License](#-license)
 
 ## 🚀 Features  
 
 ### 🎟 Application Features  
 - User-friendly ticket booking system (BookMyShow-like clone)  
-- Runs on Node.js with simple setup  
+- Runs on Node.js with a simple setup  
 - Exposed via Kubernetes Service (NodePort / LoadBalancer)  
 
 ### ⚙️ DevOps Features  
@@ -53,7 +52,8 @@ This project is a BookMyShow-like ticket booking app built with a complete DevOp
 
 
 ## 🏗 Architecture
-```flowchart TD
+```
+flowchart TD
   A[Developer] -->|Push Code| B[GitHub Repo]
   B -->|Webhook| C[Jenkins Pipeline]
   C --> D[SonarQube Scan]
@@ -94,7 +94,7 @@ This project is a BookMyShow-like ticket booking app built with a complete DevOp
 - **AWS EKS** → Managed Kubernetes cluster  
 
 ## 📂 Project Structure  
-
+```
 DevOps-BookMyShow/
 │── bookmyshow-app/ # Node.js BookMyShow clone application
 │ ├── package.json # Node.js dependencies
@@ -106,7 +106,7 @@ DevOps-BookMyShow/
 │── service.yml # Kubernetes Service manifest
 │── BMS-Document.txt # Setup & installation guide (tools, Jenkins, AWS, K8s, monitoring)
 │── README.md # Project documentation (this file)
-
+```
 
 ## ⚡ Setup Instructions  
 
@@ -329,14 +329,9 @@ post {
 }
 ```
 
-* Sends an email notification with logs and scan results.
-
-
-
+  * Sends an email notification with logs and scan results.
 
 ## ☸️ Kubernetes Deployment
-
-
 1️⃣ Prerequisites
 
 * An EKS cluster running in AWS (created via eksctl or AWS Console).
@@ -469,6 +464,19 @@ git push origin feature/your-feature-name
 ```
 
 5. Open a Pull Request and describe what you’ve added/changed
+
+📝 Guidelines
+
+* Follow existing code style
+
+* Write clear commit messages
+
+* Update documentation if needed
+
+* Ensure pipelines/tests pass before submitting PR
+
+
+
 
 
 
