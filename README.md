@@ -328,8 +328,8 @@ post {
 }
 ```
 
-[A Jenkins Pipeline](bookmyshow-app/public/website_images/Screenshot From 2025-09-15 23-49-38.png)
   * Sends an email notification with logs and scan results.
+[A Jenkins Pipeline](https://github.com/MoizAnsari-Dev/DevOps-BookMyShow/blob/882b3f7f87a3ea6ae4691683df90492093de2f29/bookmyshow-app/public/website_images/Screenshot%20From%202025-09-15%2023-49-38.png)
 
 ## ☸️ Kubernetes Deployment
 1️⃣ Prerequisites
@@ -474,6 +474,7 @@ git push origin feature/your-feature-name
 * Update documentation if needed
 
 * Ensure pipelines/tests pass before submitting PR
+
 
 
 
